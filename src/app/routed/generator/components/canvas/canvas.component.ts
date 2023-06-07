@@ -1,6 +1,19 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { GeneratorService } from '../../services/generator.service';
 import { Subscription } from 'rxjs';
+
+const size = { width: 128, height: 128 };
+const iconModeScale = 0.25;
+const reactionModeScale = 0.125;
+
+const background = {
+  light: '#ffffff',
+  lightIcon: '#ffffff',
+  lightReaction: '#EBF5FA',
+  dark: '#1B1D21',
+  darkIcon: '#1B1D21',
+  darkReaction: '#1263A3',
+};
 
 @Component({
   selector: 'app-canvas',
@@ -10,9 +23,9 @@ import { Subscription } from 'rxjs';
 export class CanvasComponent {
   @ViewChild('canvas', { static: true }) canvas!: ElementRef<HTMLCanvasElement>;
 
-  readonly size = { width: 128, height: 128 };
-
   context!: CanvasRenderingContext2D;
+
+  @Input() mode: keyof typeof background = 'light';
 
   readonly subscription = new Subscription();
 
@@ -38,11 +51,23 @@ export class CanvasComponent {
   }
 
   get width(): number {
-    return this.size.width;
+    return size.width;
   }
 
   get height(): number {
-    return this.size.height;
+    return size.height;
+  }
+
+  get scale(): number {
+    return this.mode.includes('Reaction')
+      ? reactionModeScale
+      : this.mode.includes('Icon')
+      ? iconModeScale
+      : 1;
+  }
+
+  get backgroundColor(): string {
+    return background[this.mode];
   }
 
   download() {
