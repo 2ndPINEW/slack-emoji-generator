@@ -1,7 +1,7 @@
 <div class="input-area">
   <input class="input" type="text" [(ngModel)]="query" (ngModelChange)="onQueryChange()" (click)="onClick()">
-  <div class="current-font-area" *ngIf="currentFontFamily && !showPullDown">
-    <div class="current-font">{{currentFontFamily.family}}</div>
+  <div class="current-font-area" *ngIf="!showPullDown">
+    <div class="current-font">{{(currentFontFamily$ | async)}}</div>
   </div>
 </div>
 <div class="pull-down-area" *ngIf="showPullDown">

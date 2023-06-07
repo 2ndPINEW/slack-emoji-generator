@@ -3,6 +3,7 @@ import {
   FontFamily,
   LocalFontService,
 } from 'src/app/services/local-font.service';
+import { GeneratorService } from '../../services/generator.service';
 
 @Component({
   selector: 'app-font-selector',
@@ -16,9 +17,12 @@ export class FontSelectorComponent {
 
   showPullDown = false;
 
-  currentFontFamily: FontFamily | null = null;
+  currentFontFamily$ = this.generatorService.font$;
 
-  constructor(private localFontService: LocalFontService) {}
+  constructor(
+    private localFontService: LocalFontService,
+    private generatorService: GeneratorService
+  ) {}
 
   ngAfterViewInit(): void {
     this.onQueryChange();
@@ -42,12 +46,11 @@ export class FontSelectorComponent {
   }
 
   onFontFamilyClick(fontFamily: FontFamily) {
-    this.currentFontFamily = fontFamily;
+    this.currentFontFamily$.next(fontFamily.family);
     this.showPullDown = false;
   }
 
   isCurrentFontFamily(fontFamily: FontFamily) {
-    // TODO: 仮なので後で直す
-    return this.currentFontFamily?.family === fontFamily.family;
+    return this.currentFontFamily$.value === fontFamily.family;
   }
 }
