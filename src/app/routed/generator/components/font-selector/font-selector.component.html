@@ -1,0 +1,11 @@
+<div class="input-area">
+  <input class="input" type="text" [(ngModel)]="query" (ngModelChange)="onQueryChange()" (click)="onClick()">
+  <div class="current-font-area" *ngIf="currentFontFamily && !showPullDown">
+    <div class="current-font">{{currentFontFamily.family}}</div>
+  </div>
+</div>
+<div class="pull-down-area" *ngIf="showPullDown">
+  <button *ngFor="let fontFamily of fontFamilies" class="pull-down-item"
+    [class.active]="isCurrentFontFamily(fontFamily)"
+    (click)="onFontFamilyClick(fontFamily)">{{fontFamily.family}}</button>
+</div>
