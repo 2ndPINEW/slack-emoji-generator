@@ -6,6 +6,6 @@
 </div>
 <div class="pull-down-area" *ngIf="showPullDown">
   <button *ngFor="let fontFamily of fontFamilies" class="pull-down-item"
-    [class.active]="isCurrentFontFamily(fontFamily)"
-    (click)="onFontFamilyClick(fontFamily)">{{fontFamily.family}}</button>
+    [class.active]="isCurrentFontFamily(fontFamily)" (click)="onFontFamilyClick(fontFamily)"
+    [style.fontFamily]="fontFamily.family">{{fontFamily.family}}</button>
 </div>
