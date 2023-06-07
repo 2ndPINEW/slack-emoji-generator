@@ -1,5 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, combineLatest, map, zip } from 'rxjs';
+import {
+  BehaviorSubject,
+  combineLatest,
+  debounce,
+  debounceTime,
+  map,
+  tap,
+  zip,
+} from 'rxjs';
 
 interface State {
   font: string;
@@ -28,6 +36,7 @@ export class GeneratorService {
   ]).pipe(
     map(([font, fontWeight, text, color]) => {
       return { font, fontWeight, text, color };
-    })
+    }),
+    debounceTime(50)
   );
 }
