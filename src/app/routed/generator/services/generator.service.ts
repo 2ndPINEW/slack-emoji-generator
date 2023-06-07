@@ -13,7 +13,7 @@ interface State {
 export class GeneratorService {
   font$ = new BehaviorSubject<State['font']>('Arial');
 
-  text$ = new BehaviorSubject<State['text']>('絵文\n字。');
+  text$ = new BehaviorSubject<State['text']>('Emoji');
 
   color$ = new BehaviorSubject<State['color']>('#000000');
 
