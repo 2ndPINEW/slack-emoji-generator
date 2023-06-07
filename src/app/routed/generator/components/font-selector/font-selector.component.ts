@@ -47,10 +47,16 @@ export class FontSelectorComponent {
 
   onFontFamilyClick(fontFamily: FontFamily) {
     this.currentFontFamily$.next(fontFamily.family);
+    this.generatorService.fontWeight$.next(this.fontWeight(fontFamily));
     this.showPullDown = false;
   }
 
   isCurrentFontFamily(fontFamily: FontFamily) {
     return this.currentFontFamily$.value === fontFamily.family;
+  }
+
+  fontWeight(fontFamily: FontFamily) {
+    const maxFace = Math.max(...fontFamily.faces.map((face) => Number(face)));
+    return maxFace;
   }
 }

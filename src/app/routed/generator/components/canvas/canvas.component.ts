@@ -39,7 +39,7 @@ export class CanvasComponent {
     this.subscription.add(
       this.generatorService.state$.subscribe((state) => {
         this.context.clearRect(0, 0, this.width, this.height);
-        this.context.font = `32px ${state.font}`;
+        this.context.font = `${state.fontWeight} 32px ${state.font}`;
         this.context.fillStyle = state.color;
         this.context.fillText(state.text, 0, 50);
       })
