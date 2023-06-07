@@ -18,7 +18,6 @@ export class ColorPickerComponent {
   }
 
   changeColor(color: string) {
-    console.log(color);
     this.generatorService.color$.next(color as `#${string}`);
   }
 }
