@@ -41,8 +41,10 @@
     max-height: 300px;
     overflow: auto;
     border: 1px solid gray;
+    border-radius: 8px;
     padding: 4px;
     position: absolute;
+    background-color: white;
     left: 0;
     z-index: 10;
 
