@@ -1,13 +1,5 @@
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  debounce,
-  debounceTime,
-  map,
-  tap,
-  zip,
-} from 'rxjs';
+import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
 
 interface State {
   font: string;
