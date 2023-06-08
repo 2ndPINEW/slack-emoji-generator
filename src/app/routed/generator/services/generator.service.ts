@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, debounceTime, map } from 'rxjs';
 
-interface State {
+export interface GeneratorState {
   font: string;
   fontWeight: number;
   text: string;
@@ -12,13 +12,13 @@ interface State {
   providedIn: 'root',
 })
 export class GeneratorService {
-  font$ = new BehaviorSubject<State['font']>('Arial');
+  font$ = new BehaviorSubject<GeneratorState['font']>('Arial');
 
-  fontWeight$ = new BehaviorSubject<State['fontWeight']>(900);
+  fontWeight$ = new BehaviorSubject<GeneratorState['fontWeight']>(900);
 
-  text$ = new BehaviorSubject<State['text']>('Emoji');
+  text$ = new BehaviorSubject<GeneratorState['text']>('Emoji');
 
-  color$ = new BehaviorSubject<State['color']>('#000000');
+  color$ = new BehaviorSubject<GeneratorState['color']>('#000000');
 
   state$ = combineLatest([
     this.font$,

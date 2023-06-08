@@ -1,6 +1,9 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { GeneratorService } from '../../services/generator.service';
-import { Subscription } from 'rxjs';
+import {
+  GeneratorService,
+  GeneratorState,
+} from '../../services/generator.service';
+import { Subscription, max } from 'rxjs';
 
 const size = { width: 128, height: 128 };
 const iconModeScale = 0.25;
@@ -39,11 +42,82 @@ export class CanvasComponent {
     this.subscription.add(
       this.generatorService.state$.subscribe((state) => {
         this.context.clearRect(0, 0, this.width, this.height);
-        this.context.font = `${state.fontWeight} 32px ${state.font}`;
         this.context.fillStyle = state.color;
-        this.context.fillText(state.text, 0, 50);
+        this.renderText(state);
       })
     );
+  }
+
+  measureText({
+    fontFamily,
+    fontWeight,
+    text,
+    fontSize,
+  }: {
+    fontWeight: number;
+    fontFamily: string;
+    text: string;
+    fontSize: number;
+  }) {
+    this.context.font = `${fontWeight} ${fontSize}px ${fontFamily}`;
+    return this.context.measureText(text);
+  }
+
+  calculateFontSize({
+    fontFamily,
+    fontWeight,
+    text,
+  }: {
+    fontWeight: number;
+    fontFamily: string;
+    text: string;
+  }) {
+    let fontSize = 1;
+    while (
+      this.measureText({ fontFamily, fontWeight, text, fontSize }).width <
+        this.width &&
+      fontSize < this.height
+    ) {
+      fontSize++;
+    }
+    return fontSize - 1;
+  }
+
+  private renderText(state: GeneratorState): void {
+    const texts = state.text.split('\n');
+    this.context.textAlign = 'center';
+    this.context.textBaseline = 'middle';
+    texts.forEach((text, lineIndex) => {
+      const fontSize = this.calculateFontSize({
+        text,
+        fontFamily: state.font,
+        fontWeight: state.fontWeight,
+      });
+
+      const maxWidth = this.measureText({
+        text,
+        fontWeight: state.fontWeight,
+        fontSize: this.width,
+        fontFamily: state.font,
+      }).width;
+      const scaleX = 1;
+      const scaleY =
+        maxWidth < this.width ? 1 : maxWidth / (this.height * texts.length);
+
+      const x = this.width / 2;
+      const y = this.height / scaleY / 2;
+
+      this.context.save();
+      this.context.scale(scaleX, scaleY);
+      this.measureText({
+        text,
+        fontWeight: state.fontWeight,
+        fontSize: fontSize,
+        fontFamily: state.font,
+      });
+      this.context.fillText(text, x, y);
+      this.context.restore();
+    });
   }
 
   ngOnDestroy() {
