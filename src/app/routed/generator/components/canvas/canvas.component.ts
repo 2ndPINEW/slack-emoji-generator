@@ -87,6 +87,7 @@ export class CanvasComponent {
     const texts = state.text.split('\n');
     this.context.textAlign = 'center';
     this.context.textBaseline = 'middle';
+    const maxLineHeight = this.height / texts.length;
     texts.forEach((text, lineIndex) => {
       const fontSize = this.calculateFontSize({
         text,
@@ -105,7 +106,7 @@ export class CanvasComponent {
         maxWidth < this.width ? 1 : maxWidth / (this.height * texts.length);
 
       const x = this.width / 2;
-      const y = this.height / scaleY / 2;
+      const y = maxLineHeight / scaleY / 2 + maxLineHeight * lineIndex;
 
       this.context.save();
       this.context.scale(scaleX, scaleY);
